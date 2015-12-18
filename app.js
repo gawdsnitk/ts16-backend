@@ -8,7 +8,6 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var events = require('./routes/events');
-var addUser=require('./routes/addUser');
 var app = express();
 
 //database parts starts here
