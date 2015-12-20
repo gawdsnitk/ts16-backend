@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/nodetest1');
+mongoose.connect('mongodb://localhost/ts16DB');
 var userSchema = require('../models/loginCheck');
 
 /* GET users listing. */
