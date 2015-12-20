@@ -7,12 +7,11 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
-var events = require('./routes/events');
 var app = express();
 
 //database parts starts here
 var mongoose=require('mongoose');
-mongoose.connect('mongodb://localhost/ts16DB',function(err){
+mongoose.connect('mongodb://localhost/nodetest1',function(err){
   if(err) {
     console.log('error occured'+err);
   }
@@ -36,7 +35,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
-app.use('/events',events);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
