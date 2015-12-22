@@ -11,7 +11,7 @@ var app = express();
 
 //database parts starts here
 var mongoose=require('mongoose');
-mongoose.connect('mongodb://localhost/nodetest1',function(err){
+mongoose.connect('mongodb://localhost/ts16DB',function(err){
   if(err) {
     console.log('error occured'+err);
   }
