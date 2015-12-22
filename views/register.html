@@ -1,13 +1,16 @@
 <html>
-<head>
-  <title>Register</title>
-</head>
-<body>
-  <form method="post" action="addUser">
-    <input type="text" name="name" placeholder="Name" /><br/>
-    <input type="email" name="email" placeholder="Email"  /><br/>
-    <input type="password" name="password" placeholder="Password"  /><br/>
-    <input type="submit" name="sub" value="Submit" />
-  </form>
-</body>
+    <title>signin</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-                           1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <body>
+        
+        <h3>Enter your details:</h3>
+        <form method="post" action ="/users/register">
+            <label for = "email">Name : </label>
+            <input type="text" id="email" name="email"><br><br>
+            <label for = "password">Password : </label>
+            <input type="password" id="password" name="password"><br><br>
+             <input type="submit" value="Enter" class="btn btn-primary">
+        </form>
+    </body>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 </html>

@@ -8,7 +8,7 @@ var userSchema = require('../models/loginCheck');
 /* GET users listing. */
 var userSchema = mongoose.model('userSchema',userSchema);
 
-router.post('/loginCheck', function(req, res, next) {
+router.post('/register', function(req, res, next) {
     console.log(req.body);
     var email = req.body.email;
     var password = req.body.password;
@@ -50,9 +50,7 @@ router.post('/loginValidate', function(req, res, next){
                 if(passwordMatch)
                 {
                     console.log('Password:',passwordMatch);
-                    //res.send('congrats! you are a registered user');
-                    //res.redirect('../'); --redirect also working;
-                    res.render('index');
+                    res.redirect('../');
                 }
                 else res.send('you entered incorrect password');
             }
