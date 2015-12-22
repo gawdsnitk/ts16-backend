@@ -3,7 +3,7 @@ var router = express.Router();
 var mongoose=require('mongoose');
 
 //adding the connection
-var connection=mongoose.createConnection('mongodb://localhost/ts16DB');
+//var connection=mongoose.createConnection('mongodb://localhost/ts16DB');
 
 //define the schema
 //define the model
@@ -23,12 +23,12 @@ router.post('/postEvent',function(req,res){
   dateOfEvent:req.body.dateOfEvent,
   timeOfEvent:req.body.timeOfEvent,
   venue:req.body.venue,
-  coordinator_1:req.body.coordinator_1,                                                //name of first coordinator
-  coordinator_2:req.body.coordinator_2,                                                     //name of second coordinator
+  coordinator_1:req.body.coordinator_1,                                         //name of first coordinator
+  coordinator_2:req.body.coordinator_2,                                         //name of second coordinator
   phoneno_1:req.body.phoneno_1,
   phoneno_2:req.body.phoneno_2,
   categoryId:req.body.categoryId,
-  reference_url:req.body.reference_url,                                                               //for the reference
+  reference_url:req.body.reference_url,                                         //for the reference
   userId:req.body.userId
 });
 eventDetails.save(function(err,data){
@@ -39,7 +39,7 @@ eventDetails.save(function(err,data){
     console.log('event details saved'+data);
   }
 });
-res.end("saved");
+ res.end("saved");
 });
 
 
@@ -48,7 +48,7 @@ router.get('/',function(req,res){
 });
 
 router.get('/postEvent',function(req,res){
-res.render('event');
+ res.render('event');
 });
 
 /*

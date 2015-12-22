@@ -11,7 +11,7 @@ var eventSchema=new mongoose.Schema({
  phoneno_1:String,
  phoneno_2:String,
  categoryId:Number,
- reference_url:String,                                                                     //for the reference
+ reference_url:String,                                                           //for the reference
  userId:Number
  });
 
