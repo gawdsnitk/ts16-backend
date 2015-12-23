@@ -1,4 +1,5 @@
 var express = require('express');
+var session = require('express-session');
 var router = express.Router();
 
 /* GET home page. */
@@ -10,5 +11,16 @@ router.get('/login', function(req, res){
 });
 router.get('/registerAdmin',function(req,res){
     res.render('register');
+});
+router.get('/sessionName',function(req,res){
+    var email=req.session.userEmail;
+    if(email)
+    {
+        res.send('Hello'+' '+email);
+    }
+    else
+    {
+        res.render('login');
+    }
 });
 module.exports = router;
