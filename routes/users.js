@@ -48,7 +48,7 @@ router.post('/loginValidate', function(req, res, next){
         {  
             console.log(user.password);
             var userpass=user.password;
-            console.log('userId is'+ userid);
+            //console.log('userId is'+ userid);
             userSchema.findOne({password : sentpassword},function(err,passwordMatch){
             if(err) 
             {
