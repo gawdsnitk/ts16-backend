@@ -11,8 +11,8 @@ var eventSchema=new mongoose.Schema({
  phoneno_1:String,
  phoneno_2:String,
  categoryId:Number,
- url:String,                                                                     //for the reference
- userId:Number {type: mongoose.Schema.Types.objectId, ref: 'id'}
+ url:String,                                                                     //for the reference {//type: mongoose.Schema.Types.objectId, ref: 'id'}
+ userId: Number
  });
  
  module.exports = eventSchema;                                                   //define the model
