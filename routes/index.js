@@ -14,6 +14,12 @@ router.get('/registerAdmin',function(req,res){
     res.render('register');
 });
 
+/*
+router.post('/registerAdmin',function(req,res){
+  res.json(req.body);
+});
+*/
+
 router.get('/sessionName',function(req,res){   //demo for session
     var userName=req.session.userName;
     if(userName)

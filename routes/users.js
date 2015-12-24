@@ -18,7 +18,7 @@ var sess = {}; //will be used for session variables
 
 router.post('/register', function(req, res, next) {
     console.log(req.body);
-    var name = req.body.name;
+    var name = req.body.Name;
     var userName = req.body.userName;
     var password = req.body.password;
     var admin = new userSchema({
@@ -30,8 +30,14 @@ router.post('/register', function(req, res, next) {
     admin.save(function(err,data){
         if(err)
         {
-            console.log(err);
-            res.send('the user with the username:'+userName+' already exists');
+            console.log(err.code+err);
+            if(err.code === 11000){
+            var error='the user with the username:'+userName+' already exists';
+            }
+            else{
+            var error='something bad happened';
+            }
+            res.send(error);
         }
         else
         {
