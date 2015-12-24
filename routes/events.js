@@ -14,6 +14,19 @@ var userSchema=require('../models/userSchema');
 var eventSchema=mongoose.model('eventSchema',eventSchema);
 var userSchema=mongoose.model('userSchema',userSchema);
 
+//API TO LIST ALL EVENT
+router.get('/',function(req,res){
+  //res.render('event');
+  var query=eventSchema.find({});
+  query.exec(function(err,data){
+   if(!err){
+    console.log(data);
+    res.send(JSON.stringify(data));
+   }
+  });
+});
+
+//API FOR POSTING AN EVENT
 router.post('/postEvent',function(req,res){
   var eventDetails = new eventSchema({
   //get all values
@@ -29,26 +42,22 @@ router.post('/postEvent',function(req,res){
   phoneno_2:req.body.phoneno_2,
   categoryId:req.body.categoryId,
   reference_url:req.body.reference_url,                                         //for the reference
-  userId:req.body.userId
+  userId:req.session.userId                                                    //we get the id of the logged in ADMIN from the session variable
 });
 eventDetails.save(function(err,data){
   if(err){
-    console.log('error occured'+error);
+    console.log('error occured'+err);
+    res.send('The event has been registered already');                      //if duplicay in the event name occurs
   }
   else{
     console.log('event details saved'+data);
+    res.send("details has been saved:"+data);
   }
 });
- res.end("saved");
-});
-
-
-router.get('/',function(req,res){
-  res.render('event');
 });
 
 router.get('/postEvent',function(req,res){
- res.render('event');
+ res.redirect('../events');
 });
 
 /*
