@@ -19,6 +19,10 @@ router.post('/registerAdmin',function(req,res){
   res.json(req.body);
 });
 */
+router.get('/logout',function(req,res){
+ req.session.destroy();
+ res.send("hello");
+});
 
 router.get('/sessionName',function(req,res){   //demo for session
     var userName=req.session.userName;

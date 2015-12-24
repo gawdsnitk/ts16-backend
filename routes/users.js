@@ -3,6 +3,7 @@ var session = require('express-session');
 var router = express.Router();
 var mongoose = require('mongoose');
 var autoIncrement = require('mongoose-auto-increment');
+var bcrypt=require('bcryptjs');
 
 var connection=mongoose.createConnection('mongodb://localhost/ts16DB');
 var userSchema = require('../models/userSchema');
@@ -17,14 +18,15 @@ var userSchema = mongoose.model('userSchema',userSchema);
 var sess = {}; //will be used for session variables
 
 router.post('/register', function(req, res, next) {
-    console.log(req.body);
+    //console.log(req.body);
     var name = req.body.Name;
     var userName = req.body.userName;
-    var password = req.body.password;
+    //var passwordHash = req.body.password;
+    var passwordHash = bcrypt.hashSync(req.body.password,8); //hashing the password
     var admin = new userSchema({
        name:name,
        userName:userName,
-       password:password
+       password:passwordHash
     });
     console.log('values retrieved');
     admin.save(function(err,data){
@@ -48,40 +50,26 @@ router.post('/register', function(req, res, next) {
 });
 
 router.post('/loginValidate', function(req, res, next){
-    console.log(req.body);
     var sentUsername = req.body.userName;
     var sentpassword = req.body.password;
     userSchema.findOne({ userName : sentUsername},function(err,user){
         if(err)
         {
-            console.log("no match");
+            console.log("error occurred:"+err);
         }
         if(user)
         {
-            console.log(user.password);
-            var userpass=user.password;
-            //console.log('userId is'+ userid);
-            userSchema.findOne({password : sentpassword},function(err,passwordMatch){
-            if(err)
-            {
-                throw err;
+            if(bcrypt.compareSync(sentpassword,user.password)){
+             sess = req.session;
+             sess.userName = sentUsername;
+             sess.userId = user._id;
+             console.log(sess);
+             res.redirect('../sessionName');   
             }
             else{
-                if(passwordMatch)
-                {
-                   var pass=passwordMatch.password;
-                   console.log('Password:',passwordMatch.password);
-                }
-                if(userpass==pass)
-                {
-                    sess = req.session;
-                    sess.userName = sentUsername;
-                    console.log(sess);
-                    res.redirect('../sessionName');
-                }
-                else res.send('you entered incorrect password');
+                console.log('password mismatch');
+                res.send('you entered invalid password');
             }
-        });
         }
         else
         {
