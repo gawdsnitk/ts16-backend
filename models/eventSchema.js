@@ -1,9 +1,12 @@
 var mongoose=require('mongoose');
 var eventSchema=new mongoose.Schema({
- nameOfEvent:String,
+ nameOfEvent:{                                                                  //each event will have a unique name
+   type:String,
+   unique:true
+ },
  description:String,
  rules:String,
- dateOfEvent:Date,
+ dateOfEvent:String,
  timeOfEvent:String,
  venue:String,
  coordinator_1:String,                                                           //name of first coordinator
@@ -11,8 +14,8 @@ var eventSchema=new mongoose.Schema({
  phoneno_1:String,
  phoneno_2:String,
  categoryId:Number,
- url:String,                                                                     //for the reference {//type: mongoose.Schema.Types.objectId, ref: 'id'}
- userId: Number
+ reference_url:String,                                                           //for the reference
+ userId:Number                                                                   //the userid of the logged in admin who will register for the event
  });
- 
+
  module.exports = eventSchema;                                                   //define the model
