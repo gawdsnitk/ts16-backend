@@ -64,7 +64,7 @@ router.post('/loginValidate', function(req, res, next){
              sess.userName = sentUsername;
              sess.userId = user._id;
              console.log(sess);
-             res.redirect('../sessionName');   
+             res.redirect('../events/postEvent');
             }
             else{
                 console.log('password mismatch');
