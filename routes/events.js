@@ -38,7 +38,6 @@ router.get('/postEvent',function(req,res){
  res.render('event');
 });
 
-
 //API FOR POSTING AN EVENT
 router.post('/postEvent',function(req,res){
   console.log('in post event');
@@ -56,7 +55,7 @@ router.post('/postEvent',function(req,res){
   phoneno_2:req.body.phoneno_2,
   categoryId:req.body.categoryId,
   reference_url:req.body.reference_url,                                         //for the reference
-  userId:req.session.userId                                                    //we get the id of the logged in ADMIN from the session variable
+  userId:req.session.userId                                                   //we get the id of the logged in ADMIN from the session variable
 });
 eventDetails.save(function(err,data){
   if(err){
@@ -88,31 +87,37 @@ router.get('/:eventName',function(req,res){
   }
  });
 });
-//
-/*
-router.get('/eventQuery',function(req,res){
-eventSchema.find({}).exec(function(err,result){
-if(!err){
-  res.write(JSON.stringify(result));
-}
-else{
-  console.log('error in your query');
-}
-});
-});
 
-//for the query on the user model
-router.get('/userQuery',function(req,res){
-var query=userSchema.find({'email':'abhishekg785@gmail.com','password':'123'});
-query.exec(function(err,result){
-if(!err){
-  res.end(JSON.stringify(result, undefined, 2));
-}
-else{
-  res.end("not found");
-}
+//API FOR DELETING THE PARTICULAR EVENT
+router.get('/deleteEvent/:eventName',function(req,res){
+  //first check whether the event exists
+  //and if event found then delete the event
+  //otherwise find the event
+  //later the middleware will be created to avoid the code repetition
+  var query=eventSchema.findOne({'nameOfEvent':req.params.eventName});   //later this code will be removed to make a middleware as its has been used earlier
+  query.exec(function(err,event){
+    if(!err){
+      if(event){  //event found
+        console.log('event found'+event);
+        var deleteQuery=eventSchema.remove({'nameOfEvent':req.params.eventName});
+        deleteQuery.exec(function(err){
+          if(!err){
+            res.send('deleted');
+          }
+          else{
+            res.send('error ocurred'+err);
+          }
+        });
+      }
+      else{
+        res.send('no such event found');
+      }
+    }
+    else{
+      console.log(err);
+      res.send('error ocurred'+err);
+    }
+  });
 });
-});
-*/
 
 module.exports=router;

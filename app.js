@@ -39,7 +39,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 //session part comes here
 app.use(session({
-  secret           : 'sbcdbty589yt985bivfb985986795867598',
+  secret           : 'sbcdbty589yt985bivfb985986795867598',    //will encrypt the key
   name             : 'TS16',
   resave           :  true,
   saveUninitialized:  true

@@ -15,7 +15,7 @@ userSchema.plugin(autoIncrement.plugin,'userSchema');
 
 /* GET users listing. */
 var userSchema = mongoose.model('userSchema',userSchema);
-var sess = {}; //will be used for session variables
+//var sess = {}; //will be used for session variables
 
 router.post('/register', function(req, res, next) {
     //console.log(req.body);
@@ -60,10 +60,9 @@ router.post('/loginValidate', function(req, res, next){
         if(user)
         {
             if(bcrypt.compareSync(sentpassword,user.password)){
-             sess = req.session;
-             sess.userName = sentUsername;
-             sess.userId = user._id;
-             console.log(sess);
+             req.session.userName = sentUsername;
+             req.session.userId = user._id;
+             //console.log(sess);
              res.redirect('../events/postEvent');
             }
             else{
