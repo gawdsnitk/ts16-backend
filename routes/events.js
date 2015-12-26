@@ -35,13 +35,22 @@ router.get('/',function(req,res){
 });
 
 router.get('/postEvent',function(req,res){
+ if(req.session && req.session.userName){              //post event only if user has logged in
  res.render('event');
+ }
+ else{
+   res.redirect('../login');
+ }
 });
 
 //API FOR POSTING AN EVENT
 router.post('/postEvent',function(req,res){
+  console.log(req.body);
   console.log('in post event');
-  var eventDetails = new eventSchema({
+  var eventDetails = new eventSchema(
+  req.body
+  /*
+  {
   //get all values
   nameOfEvent:req.body.nameOfEvent,
   description:req.body.description,
@@ -55,8 +64,11 @@ router.post('/postEvent',function(req,res){
   phoneno_2:req.body.phoneno_2,
   categoryId:req.body.categoryId,
   reference_url:req.body.reference_url,                                         //for the reference
-  userId:req.session.userId                                                   //we get the id of the logged in ADMIN from the session variable
-});
+  userId:req.session.userId
+                                            //we get the id of the logged in ADMIN from the session variable
+}
+*/
+);
 eventDetails.save(function(err,data){
   if(err){
     console.log('error occured'+err);
@@ -118,6 +130,11 @@ router.get('/deleteEvent/:eventName',function(req,res){
       res.send('error ocurred'+err);
     }
   });
+});
+
+//API FOR THE UPDATE
+router.put('/updateEvent/:eventName',function(req,res){
+
 });
 
 module.exports=router;
