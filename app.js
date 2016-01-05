@@ -6,6 +6,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongoose=require('mongoose');
 
 
 
@@ -15,7 +16,6 @@ var events = require('./routes/events');
 var app = express();
 
 //database parts starts here
-var mongoose=require('mongoose');
 mongoose.connect('mongodb://localhost/ts16DB',function(err){
   if(err) {
     console.log('error occured'+err);

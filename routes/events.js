@@ -14,7 +14,7 @@ var userSchema=require('../models/userSchema');
 var eventSchema=mongoose.model('eventSchema',eventSchema);
 var userSchema=mongoose.model('userSchema',userSchema);
 
-//API TO LIST ALL EVENT
+//API TO LIST ALL EVENT(GET)
 router.get('/',function(req,res){
   //res.render('event');
   var query=eventSchema.find({});
@@ -22,7 +22,8 @@ router.get('/',function(req,res){
    if(!err){
     if(data){
     console.log(data);
-    res.send(JSON.stringify(data));
+    res.send(data);
+    //res.send(JSON.stringify(data));
    }
    else{
     res.send('No events yet');
@@ -43,13 +44,11 @@ router.get('/postEvent',function(req,res){
  }
 });
 
-//API FOR POSTING AN EVENT
+//API FOR POSTING AN EVENT(POST)
 router.post('/postEvent',function(req,res){
-  console.log(req.body);
+  console.log(req.body.nameOfEvent);
   console.log('in post event');
   var eventDetails = new eventSchema(
-  req.body
-  /*
   {
   //get all values
   nameOfEvent:req.body.nameOfEvent,
@@ -65,9 +64,8 @@ router.post('/postEvent',function(req,res){
   categoryId:req.body.categoryId,
   reference_url:req.body.reference_url,                                         //for the reference
   userId:req.session.userId
-                                            //we get the id of the logged in ADMIN from the session variable
+
 }
-*/
 );
 eventDetails.save(function(err,data){
   if(err){
@@ -81,7 +79,7 @@ eventDetails.save(function(err,data){
 });
 });
 
-//API FOR SEARCHING A PARTICULAR EVENT BY name
+//API FOR SEARCHING A PARTICULAR EVENT BY NAME OF EVENT(GET)
 router.get('/:eventName',function(req,res){
  //console.log(req.params.eventName);
  var query=eventSchema.findOne({'nameOfEvent':req.params.eventName});
@@ -100,7 +98,7 @@ router.get('/:eventName',function(req,res){
  });
 });
 
-//API FOR DELETING THE PARTICULAR EVENT
+//API FOR DELETING THE PARTICULAR EVENT(DELETE)
 router.get('/deleteEvent/:eventName',function(req,res){
   //first check whether the event exists
   //and if event found then delete the event
@@ -132,9 +130,36 @@ router.get('/deleteEvent/:eventName',function(req,res){
   });
 });
 
-//API FOR THE UPDATE
+//API FOR THE UPDATING THE EVENT DETAILS(PUT)
 router.put('/updateEvent/:eventName',function(req,res){
-
+  var query=eventSchema.findOne({'nameOfEvent':req.params.eventName});
+  query.exec(function(err,result){            //result contains the details of the event found
+    if(!err){
+      if(result){
+        // console.log('event found'+result);
+        // console.log('eventId:'+result._id);
+        // console.log('req.body'+req.body);
+      eventSchema.findByIdAndUpdate(result._id,req.body,function(err){
+        if(!err){
+          res.send("data updated");
+        }
+        else{
+          console.log('error'+err);
+          res.send('error'+err);
+        }
+      });
+    }
+    else{
+      console.log('no such event found to update');
+      res.send('No such update');
+    }
+    }
+    else{
+      console.log('error occured'+err);
+      res.send('error occured'+err);
+    }
+  });
 });
+
 
 module.exports=router;

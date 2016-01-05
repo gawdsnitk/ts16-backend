@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var autoIncrement = require('mongoose-auto-increment');
 var bcrypt=require('bcryptjs');
 
-var connection=mongoose.createConnection('mongodb://localhost/ts16DB');
+var connection=mongoose.createConnection('mongodb://localhost/ts16D');
 var userSchema = require('../models/userSchema');
 
 //autoIncrement for creating the object id to be autoincrementing

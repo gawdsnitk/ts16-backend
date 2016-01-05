@@ -21,7 +21,7 @@ router.post('/registerAdmin',function(req,res){
 */
 router.get('/logout',function(req,res){
  req.session.destroy();
- res.send("hello");
+ res.redirect('login');
 });
 
 router.get('/sessionName',function(req,res){   //demo for session
