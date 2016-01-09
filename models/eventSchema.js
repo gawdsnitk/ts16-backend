@@ -13,7 +13,7 @@ var eventSchema=new mongoose.Schema({
  coordinator_2:String,                                                           //name of second coordinator
  phoneno_1:String,
  phoneno_2:String,
- categoryId:Number,
+ category:String,
  reference_url:String,                                                           //for the reference
  userId:Number                                                                   //the userid of the logged in admin who will register for the event
  });

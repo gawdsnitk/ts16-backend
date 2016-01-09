@@ -1,17 +1,26 @@
 var express = require('express');
 var router = express.Router();
 var mongoose=require('mongoose');
+var autoIncrement = require('mongoose-auto-increment');
 
 //adding the connection
-//var connection=mongoose.createConnection('mongodb://localhost/ts16DB');
+var connection=mongoose.createConnection('mongodb://localhost/ts16DB');
 
 //define the schema
 //define the model
 //add data into the model
 var eventSchema=require('../models/eventSchema');
+//adding the autoIncrement
+autoIncrement.initialize(connection);
+console.log('auto increment added to eventSchema');
+eventSchema.plugin(autoIncrement.plugin,'eventSchema');
+
+
 //for the userSchema
 var userSchema=require('../models/userSchema');
 var eventSchema=mongoose.model('eventSchema',eventSchema);
+
+
 var userSchema=mongoose.model('userSchema',userSchema);
 
 //API TO LIST ALL EVENT(GET)
@@ -37,7 +46,7 @@ router.get('/',function(req,res){
 
 router.get('/postEvent',function(req,res){
  if(req.session && req.session.userName){              //post event only if user has logged in
- res.render('event');
+ res.render('dashboard');
  }
  else{
    res.redirect('../login');
@@ -61,10 +70,9 @@ router.post('/postEvent',function(req,res){
   coordinator_2:req.body.coordinator_2,                                         //name of second coordinator
   phoneno_1:req.body.phoneno_1,
   phoneno_2:req.body.phoneno_2,
-  categoryId:req.body.categoryId,
+  category:req.body.category,
   reference_url:req.body.reference_url,                                         //for the reference
   userId:req.session.userId
-
 }
 );
 eventDetails.save(function(err,data){
@@ -74,9 +82,38 @@ eventDetails.save(function(err,data){
   }
   else{
     console.log('event details saved'+data);
-    res.send("details has been saved:"+data);
+    // res.send("details has been saved:"+data);
+    res.render('dashboard');
   }
 });
+});
+
+//API FOR SEARCHING A PARTICULAR EVENT BY eventId
+router.get('/search/:id',function(req,res){
+  var query = eventSchema.findOne({'_id':req.params.id});
+  query.exec(function(err,data){
+    if(!err){
+      console.log('EVENT FOUND'+data);
+      res.send(data);
+    }
+    else{
+      console.log(err);
+    }
+  });
+});
+
+//API FOR DELETINGevents/deleteEventById/2 THE EVENT BY EVENT ID//
+router.get('/deleteEventById/:id',function(req,res){
+  var query = eventSchema.remove({'_id':req.params.id});
+  query.exec(function(err,data){
+    if(err){
+      console.log('ERROR OCCURED IN DELETING EVENT'+err);
+    }
+    else{
+      console.log('event deleted');
+      res.redirect('/events/postEvent');
+    }
+  });
 });
 
 //API FOR SEARCHING A PARTICULAR EVENT BY NAME OF EVENT(GET)
@@ -112,7 +149,8 @@ router.get('/deleteEvent/:eventName',function(req,res){
         var deleteQuery=eventSchema.remove({'nameOfEvent':req.params.eventName});
         deleteQuery.exec(function(err){
           if(!err){
-            res.send('deleted');
+            console.log('deleted');
+            res.render('dashboard');
           }
           else{
             res.send('error ocurred'+err);
@@ -130,9 +168,12 @@ router.get('/deleteEvent/:eventName',function(req,res){
   });
 });
 
+
 //API FOR THE UPDATING THE EVENT DETAILS(PUT)
-router.put('/updateEvent/:eventName',function(req,res){
-  var query=eventSchema.findOne({'nameOfEvent':req.params.eventName});
+router.post('/updateEvent',function(req,res){
+  var nameOfEvent = req.body.originalEventName;//get the name of the event
+  console.log(nameOfEvent);
+  var query=eventSchema.findOne({'nameOfEvent':nameOfEvent});
   query.exec(function(err,result){            //result contains the details of the event found
     if(!err){
       if(result){
@@ -141,7 +182,7 @@ router.put('/updateEvent/:eventName',function(req,res){
         // console.log('req.body'+req.body);
       eventSchema.findByIdAndUpdate(result._id,req.body,function(err){
         if(!err){
-          res.send("data updated");
+          res.render('dashboard');
         }
         else{
           console.log('error'+err);
@@ -151,7 +192,7 @@ router.put('/updateEvent/:eventName',function(req,res){
     }
     else{
       console.log('no such event found to update');
-      res.send('No such update');
+      res.send('No such event found');
     }
     }
     else{

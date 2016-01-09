@@ -10,7 +10,7 @@ var userSchema = require('../models/userSchema');
 
 //autoIncrement for creating the object id to be autoincrementing
 autoIncrement.initialize(connection);
-console.log('auto increment added to app.js');
+console.log('auto increment added to userschema');
 userSchema.plugin(autoIncrement.plugin,'userSchema');
 
 /* GET users listing. */

@@ -6,11 +6,12 @@
         <h3>Enter your details:</h3>
         <form method="post" action ="/users/loginValidate">
             <label for = "email">Username : </label>
-            <input type="text" id="email" name="userName"><br><br>
+            <input type="text" id="email" name="userName" required><br><br>
             <label for = "password">Password : </label>
-            <input type="password" id="password" name="password"><br><br>
+            <input type="password" id="password" name="password" required><br><br>
             <input type="submit" value="Enter" class="btn btn-primary">
         </form>
+         <a href="/registerAdmin" class="btn btn-primary" role="button">Create Account</a>
     </body>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 </html>

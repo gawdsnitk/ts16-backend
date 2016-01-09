@@ -14,6 +14,10 @@ router.get('/registerAdmin',function(req,res){
     res.render('register');
 });
 
+router.get('/addevent', function(req, res){
+   res.render('addEvent');
+});
+
 /*
 router.post('/registerAdmin',function(req,res){
   res.json(req.body);
