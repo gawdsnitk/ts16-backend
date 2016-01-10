@@ -22,6 +22,17 @@ var eventSchema=mongoose.model('eventSchema',eventSchema);
 
 var userSchema=mongoose.model('userSchema',userSchema);
 
+//middleware for checking whether the user is logged in or not
+function checkLogin(req,res,next){
+  if(req.session && req.session.userName){
+    next();
+  }
+  else{
+    res.redirect('/login');
+  }
+}
+
+
 //API TO LIST ALL EVENT(GET)
 router.get('/',function(req,res){
   //res.render('event');
@@ -43,7 +54,7 @@ router.get('/',function(req,res){
   });
 });
 
-router.get('/postEvent',function(req,res){
+router.get('/postEvent',checkLogin,function(req,res){
  if(req.session && req.session.userName){              //post event only if user has logged in
  res.render('dashboard');
  }
@@ -53,7 +64,7 @@ router.get('/postEvent',function(req,res){
 });
 
 //API FOR POSTING AN EVENT(POST)
-router.post('/postEvent',function(req,res){
+router.post('/postEvent',checkLogin,function(req,res){
   console.log(req.body.nameOfEvent);
   console.log('in post event');
   var eventDetails = new eventSchema(
@@ -102,7 +113,7 @@ router.get('/searchEvent/:id',function(req,res){
 });
 
 //API FOR DELETINGevents/deleteEventById/2 THE EVENT BY EVENT ID//
-router.get('/deleteEventById/:id',function(req,res){
+router.get('/deleteEventById/:id',checkLogin,function(req,res){
   var query = eventSchema.remove({'_id':req.params.id});
   query.exec(function(err,data){
     if(err){
@@ -135,7 +146,7 @@ router.get('/:eventName',function(req,res){
 });
 
 //API FOR DELETING THE PARTICULAR EVENT(DELETE)
-router.get('/deleteEvent/:eventName',function(req,res){
+router.get('/deleteEvent/:eventName',checkLogin,function(req,res){
   //first check whether the event exists
   //and if event found then delete the event
   //otherwise find the event
@@ -169,7 +180,7 @@ router.get('/deleteEvent/:eventName',function(req,res){
 
 
 //API FOR THE UPDATING THE EVENT DETAILS(PUT)
-router.post('/updateEvent',function(req,res){
+router.post('/updateEvent',checkLogin,function(req,res){
   var nameOfEvent = req.body.originalEventName;//get the name of the event
   console.log(nameOfEvent);
   var query=eventSchema.findOne({'nameOfEvent':nameOfEvent});

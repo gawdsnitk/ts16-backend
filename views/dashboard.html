@@ -9,13 +9,21 @@
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   <script src='//cdn.tinymce.com/4/tinymce.min.js'></script>
   <script>tinymce.init({selector:'textarea'});</script>
-
   <style>
+       body{
+         margin: 0px;
+         padding: 0px;
+      }
+      #myTable table{
+        width: 100%;
+        max-width: 100%;
+      }
+
       #myTable table td {
-        max-width: 120px;
+        max-width: 103px;
         overflow: hidden;
         padding: 10px;
-        max-height: 90px;
+        max-height: 10px;
       }
 
       #descText{
@@ -23,22 +31,71 @@
         overflow-y: auto;
       }
 
-      table thead tr td{
+      #myTable table thead tr td{
         font-size: 13px;
         font-family:sans-serif;
+        border: 2px solid black;
       }
 
+      .header{
+        height: 100px;
+        width: 100%;
+        background-color: lightgrey;
+        padding: 0px;
+        margin: 0px;
+        text-align: center;
+      }
+
+      .header p{
+        padding: 0px;
+        margin: 0px;
+      }
+
+      .header h1{
+        margin: 0px;
+        padding: 0px;
+      }
+
+      .options{
+        width: 100%;
+        padding: 0px;
+        margin: 0px;
+        margin-top: 0px;
+        height: 100px;
+        position: absolute;
+        top:0px;
+      }
+
+      .logout{
+        float: right;
+        margin-top:5px;
+        margin-right: 10px;
+      }
+
+      .addEvent{
+        float: left;
+        margin-left: 15px;
+        margin-top: 50px;
+      }
+
+      .showMore{
+        padding: 0px;
+        margin: 0px;
+        border: 1px solid black;
+      }
   </style>
 </head>
 <body>
-  <div class="jumbotron">
+  <div class="header">
     <h1>Techspardha'16</h1>
     <p>Admin Panel</p>
+  <div class="options">
+    <a href="/logout" class="btn btn-primary logout" role="button">Log Out</a>
+    <a href="/addEvent" class="btn btn-primary addEvent" > Add Event </a>
+  </div>
   </div>
 <div>
-    <p><a href="/logout" class="btn btn-primary" role="button">Log Out</a></p>
-    <p><a href="/addEvent" class="btn btn-primary"> Add Event </a></p>
-    <div id="myTable">
+  <div id="myTable">
         <table border="1">
             <thead>
                 <tr>
@@ -69,24 +126,38 @@
     for (var i=0; i<data.length; i++){
         tr = $('<tr/>');
         var eventId = data[i]._id;
-        tr.append("<td>" + data[i].nameOfEvent + "</td>")
-          .append("<td>" + data[i].description + '<br/><button onclick="getDescription('+ data[i]._id+')" data-toggle="modal" data-target="#descModel">Show more...</button>'+"</td>")
-          .append("<td>" + data[i].rules + '<br/><button onclick="getRules('+ data[i]._id+')" data-toggle="modal" data-target="#descModel">Show more...</button>'+"</td>")
+        tr.append("<td>" + data[i].nameOfEvent + "</td>");
+        console.log(data[i].description.length);
+        if(data[i].description.length < 20){
+        tr.append("<td>" + data[i].description + '<br/><button class="showMore" onclick="getDescription('+ data[i]._id+')" data-toggle="modal" data-target="#descModel">Show more...</button>'+"</td>");
+        }
+        else{
+          var str = data[i].description.substring(10,15);
+          console.log(str);
+          tr.append("<td>" + str + '<br/><button style="font-size:15px,font-family:verdana" class="showMore" onclick="getDescription('+ data[i]._id+')" data-toggle="modal" data-target="#descModel">Show more...</button>'+"</td>");
+        }
+        if(data[i].rules.length < 20){
+        tr.append("<td>" + data[i].rules + '<br/><button class="showMore" onclick="getRules('+ data[i]._id+')" data-toggle="modal" data-target="#descModel">Show more...</button>'+"</td>");
+        }
+        else{
+          var strg = data[i].rules.substring(10,15);
+          tr.append("<td>" + strg + '<br/><button class="showMore" onclick="getRules('+ data[i]._id+')" data-toggle="modal" data-target="#descModel">Show more...</button>'+"</td>");
+        }
           // .append("<td>"+ data[i].rules +"</td>")
-          .append("<td>" + data[i].dateOfEvent + "</td>")
-          .append("<td>" + data[i].timeOfEvent + "</td>")
-          .append("<td>" + data[i].venue + "</td>")
-          .append("<td>" + data[i].coordinator_1 + "</td>")
-          .append("<td>" + data[i].coordinator_2 + "</td>")
-          .append("<td>" + data[i].phoneno_1 + "</td>")
-          .append("<td>" + data[i].phoneno_2 + "</td>")
-          .append("<td>" + data[i].category+ "</td>")
-          .append("<td>" + data[i].reference_url + "</td>")
+        tr.append("<td>" + data[i].dateOfEvent + "</td>");
+        tr.append("<td>" + data[i].timeOfEvent + "</td>");
+        tr.append("<td>" + data[i].venue + "</td>");
+        tr.append("<td>" + data[i].coordinator_1 + "</td>");
+        tr.append("<td>" + data[i].coordinator_2 + "</td>");
+        tr.append("<td>" + data[i].phoneno_1 + "</td>");
+        tr.append("<td>" + data[i].phoneno_2 + "</td>");
+        tr.append("<td>" + data[i].category+ "</td>");
+        tr.append("<td>" + data[i].reference_url + "</td>");
         // tr.append("<td>" + '<a href="/events/updateEvent/' + data[i].nameOfEvent + '"class="btn btn-primary" data-toggle="modal" role="button"> Update </a>'          + "</td>");
-          .append("<td>"+'<button type="button" onclick="play( ' + data[i]._id +')" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Update</button>'+"</td>")
+        tr.append("<td>"+'<button type="button" onclick="play( ' + data[i]._id +')" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Update</button>'+"</td>");
         //console.log("<td>"+'<button type="button" onclick="play('+ data[i]._id +')" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Update</button>'+"</td>");
         // tr.append("<td>" + '<a href="/events/deleteEvent/' + data[i].nameOfEvent + '"class="btn btn-primary" role="button"><span class="glyphicon glyphicon-minus">Delete</a>' + "</td>");
-          .append("<td>"+'<button type="button" onclick="deleteEvent('+ data[i]._id +')" class="btn btn-primary btn-lg">Delete</button>');
+        tr.append("<td>"+'<button type="button" onclick="deleteEvent('+ data[i]._id +')" class="btn btn-primary btn-lg">Delete</button>');
         $('#events').append(tr);
      }
    });
@@ -102,7 +173,6 @@ function play(eventId){
       document.getElementById("originalEventName").value = data.nameOfEvent;
       document.getElementById("nameOfEvent").value = data.nameOfEvent;
       document.getElementById("description").value = data.description;
-      console.log(data.description);
       document.getElementById("rules").value = data.rules;
       document.getElementById("timeOfEvent").value = data.timeOfEvent;
       document.getElementById("dateOfEvent").value = data.dateOfEvent;
@@ -134,8 +204,8 @@ function getRules(eventId){
   $(document).ready(function(){
    var url = 'http://localhost:3000/events/searchEvent/'+eventId;
    $.getJSON( url, function( data ) {
-     console.log(data);
-     document.getElementById("descText").innerHTML=data.events;
+     console.log(data.rules);
+     document.getElementById("descText").innerHTML = data.rules;
    });
  });
 }

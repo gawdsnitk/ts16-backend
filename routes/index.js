@@ -2,6 +2,16 @@ var express = require('express');
 var session = require('express-session');
 var router = express.Router();
 
+//middleware for checking if user exists or not
+function checkUser(req,res,next){
+  console.log('IN THE USER CHECKLOGIN MIDDLEWARE');
+  if(req.session && req.session.userName){
+    next();
+  }
+  else{
+    res.redirect('/login');
+  }
+}
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index');
@@ -14,7 +24,7 @@ router.get('/registerAdmin',function(req,res){
     res.render('register');
 });
 
-router.get('/addevent', function(req, res){
+router.get('/addevent',checkUser, function(req, res){
    res.render('addEvent');
 });
 
