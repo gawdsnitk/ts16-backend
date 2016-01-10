@@ -70,8 +70,9 @@
         tr = $('<tr/>');
         var eventId = data[i]._id;
         tr.append("<td>" + data[i].nameOfEvent + "</td>")
-          .append("<td class='desctd'><div>" + data[i].description + '<br/><button onclick="getDescription('+ data[i]._id+')" data-toggle="modal" data-target="#descModel">Show more...</button>'+"</td>")
-          .append("<td>"+ data[i].rules +"</td>")
+          .append("<td>" + data[i].description + '<br/><button onclick="getDescription('+ data[i]._id+')" data-toggle="modal" data-target="#descModel">Show more...</button>'+"</td>")
+          .append("<td>" + data[i].rules + '<br/><button onclick="getRules('+ data[i]._id+')" data-toggle="modal" data-target="#descModel">Show more...</button>'+"</td>")
+          // .append("<td>"+ data[i].rules +"</td>")
           .append("<td>" + data[i].dateOfEvent + "</td>")
           .append("<td>" + data[i].timeOfEvent + "</td>")
           .append("<td>" + data[i].venue + "</td>")
@@ -94,7 +95,7 @@
 function play(eventId){
   //alert(eventId);
    $(document).ready(function(){
-    var url = 'http://localhost:3000/events/search/'+eventId;
+    var url = 'http://localhost:3000/events/searchEvent/'+eventId;
     //alert(url);
     $.getJSON( url, function( data ) {
       console.log(data);
@@ -118,12 +119,23 @@ function play(eventId){
    });
 }
 
-function getDescription(eventId){
+function getDescription(eventId,task){
   // alert(eventId);
   $(document).ready(function(){
-   var url = 'http://localhost:3000/events/search/'+eventId;
+   var url = 'http://localhost:3000/events/searchEvent/'+eventId;
    $.getJSON( url, function( data ) {
      document.getElementById("descText").innerHTML=data.description;
+   });
+ });
+}
+
+function getRules(eventId){
+  //alert(eventId);
+  $(document).ready(function(){
+   var url = 'http://localhost:3000/events/searchEvent/'+eventId;
+   $.getJSON( url, function( data ) {
+     console.log(data);
+     document.getElementById("descText").innerHTML=data.events;
    });
  });
 }
@@ -245,6 +257,12 @@ function deleteEvent(eventId){
                 <option value="none"></option>
                 <option value="Technical">Technical</option>
                 <option value="Managerial">Managerial</option>
+                <option value="Quizzes">Quizzes</option>
+                <option value="FunZone">FunZone</option>
+                <option value="Online Events">Online Events</option>
+                <option value="Paper Events">Paper Events</option>
+                <option value="Technopolis">Technopolis</option>
+                <option value="Design">Design</option>
               </select>
             </div>
           </div>

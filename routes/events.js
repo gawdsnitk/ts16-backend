@@ -15,7 +15,6 @@ autoIncrement.initialize(connection);
 console.log('auto increment added to eventSchema');
 eventSchema.plugin(autoIncrement.plugin,'eventSchema');
 
-
 //for the userSchema
 var userSchema=require('../models/userSchema');
 var eventSchema=mongoose.model('eventSchema',eventSchema);
@@ -89,7 +88,7 @@ eventDetails.save(function(err,data){
 });
 
 //API FOR SEARCHING A PARTICULAR EVENT BY eventId
-router.get('/search/:id',function(req,res){
+router.get('/searchEvent/:id',function(req,res){
   var query = eventSchema.findOne({'_id':req.params.id});
   query.exec(function(err,data){
     if(!err){
@@ -202,5 +201,21 @@ router.post('/updateEvent',function(req,res){
   });
 });
 
+//api for searching the events by category
+router.get('/category/:name',function(req,res){
+  var categoryName = req.params.name;
+  var query = eventSchema.find({'category':categoryName});
+  query.exec(function(err,data){
+    if(err){
+      console.log(err);
+      res.send('NO SUCH CATEGORY EXISTS');
+    }
+    else{
+      console.log(data);
+      res.send(data);
+    }
+    //console.log(data);
+  });
+});
 
 module.exports=router;
