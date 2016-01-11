@@ -103,8 +103,13 @@ router.get('/searchEvent/:id',function(req,res){
   var query = eventSchema.findOne({'_id':req.params.id});
   query.exec(function(err,data){
     if(!err){
+      if(data != ""){
       console.log('EVENT FOUND'+data);
       res.send(data);
+    }
+    else{
+      res.send('NO SUCH EVENT');
+    }
     }
     else{
       console.log(err);
@@ -127,7 +132,7 @@ router.get('/deleteEventById/:id',checkLogin,function(req,res){
 });
 
 //API FOR SEARCHING A PARTICULAR EVENT BY NAME OF EVENT(GET)
-router.get('/:eventName',function(req,res){
+router.get('/:event Name',function(req,res){
  //console.log(req.params.eventName);
  var query=eventSchema.findOne({'nameOfEvent':req.params.eventName});
  query.exec(function(err,result){

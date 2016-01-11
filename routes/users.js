@@ -44,7 +44,8 @@ router.post('/register', function(req, res, next) {
         else
         {
             console.log(admin.userName + "inserted");
-            res.send('registered');
+            // res.send('registered');
+            res.redirect('/login');
         }
     });
 });

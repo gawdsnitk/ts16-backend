@@ -1,17 +1,33 @@
 <html>
-    <title>login</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-                           1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <head>
+    <title>Admin Login</title>
+    <link rel="stylesheet" type="text/css" href="stylesheets/login.css"/>
+  </head>
     <body>
-
-        <h3>Enter your details:</h3>
+    <section class="header">
+      <p>Admin Login</p>
+    </section>
+    <section class="formSection">
+      <table align="center">
         <form method="post" action ="/users/loginValidate">
-            <label for = "email">Username : </label>
-            <input type="text" id="email" name="userName" required><br><br>
-            <label for = "password">Password : </label>
-            <input type="password" id="password" name="password" required><br><br>
-            <input type="submit" value="Enter" class="btn btn-primary">
-        </form>
-         <a href="/registerAdmin" class="btn btn-primary" role="button">Create Account</a>
+        <tr>
+          <td><input type="text" class="textbox" id="username" name="userName" required placeholder="Username"></td>
+        </tr>
+        <tr>
+          <td><input type="password" class="textbox" id="password" name="password" required placeholder="Password"></td>
+        </tr>
+        <tr>
+          <td><input type="submit" class="button" value="Login"></td>
+        </tr>
+      </form>
+      <tr>
+        <td>OR</td>
+      </tr>
+      <tr>
+        <td><a class="linkClass" href="/registerAdmin">Create Account</a</td>
+      </tr>
+      </table>
+    </section>
     </body>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 </html>
