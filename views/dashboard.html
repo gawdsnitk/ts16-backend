@@ -10,10 +10,11 @@
   <script src='//cdn.tinymce.com/4/tinymce.min.js'></script>
   <script>tinymce.init({selector:'textarea'});</script>
   <style>
-       body{
+      body{
          margin: 0px;
          padding: 0px;
       }
+
       #myTable table{
         width: 100%;
         max-width: 100%;
@@ -32,18 +33,23 @@
       }
 
       #myTable table thead tr td{
-        font-size: 13px;
+        font-size: 12px;
         font-family:sans-serif;
         border: 2px solid black;
+        background-color: lightgrey;
+        text-align: center;
       }
 
       .header{
-        height: 100px;
+        height: 140px;
         width: 100%;
-        background-color: lightgrey;
+        background-color:black;
         padding: 0px;
         margin: 0px;
         text-align: center;
+        color:white;
+        padding: 25px 0px;
+        font-family: sans-serif;
       }
 
       .header p{
@@ -82,16 +88,48 @@
         padding: 0px;
         margin: 0px;
         border: 1px solid black;
+        width:70px;
+        background-color: white;
+        padding: 2px;
       }
-  </style>
+
+      .showMore:hover{
+        background-color: black;
+        color: white;
+      }
+      .btn-header{
+        border: 1px solid white;
+        background-color: black;
+        color:white;
+      }
+
+      .btn:hover{
+        color: black;
+        background-color: white;
+      }
+
+      .alter-but{
+        border:1px solid white;
+        background-color: white;
+        color:black;
+        border:1px solid black;
+        height: 50px;
+        font-size: 14px;
+      }
+
+      .alter-but:hover{
+        background-color: black;
+        color: white;
+      }
+    </style>
 </head>
 <body>
   <div class="header">
     <h1>Techspardha'16</h1>
     <p>Admin Panel</p>
   <div class="options">
-    <a href="/logout" class="btn btn-primary logout" role="button">Log Out</a>
-    <a href="/addEvent" class="btn btn-primary addEvent" > Add Event </a>
+    <a href="/logout" class="btn-header btn btn-primary logout" role="button">Log Out</a>
+    <a href="/addEvent" class="btn-header btn btn-primary addEvent" > Add Event </a>
   </div>
   </div>
 <div>
@@ -129,19 +167,19 @@
         tr.append("<td>" + data[i].nameOfEvent + "</td>");
         console.log(data[i].description.length);
         if(data[i].description.length < 20){
-        tr.append("<td>" + data[i].description + '<br/><button class="showMore" onclick="getDescription('+ data[i]._id+')" data-toggle="modal" data-target="#descModel">Show more...</button>'+"</td>");
+        tr.append("<td>" + data[i].description + '<br/><button  class="showMore" onclick="getDescription('+ data[i]._id+')" data-toggle="modal" data-target="#descModel">Show</button>'+"</td>");
         }
         else{
           var str = data[i].description.substring(10,15);
           console.log(str);
-          tr.append("<td>" + str + '<br/><button style="font-size:15px,font-family:verdana" class="showMore" onclick="getDescription('+ data[i]._id+')" data-toggle="modal" data-target="#descModel">Show more...</button>'+"</td>");
+          tr.append("<td>" + str + '<br/><button style="font-size:15px,font-family:verdana" class="showMore" onclick="getDescription('+ data[i]._id+')" data-toggle="modal" data-target="#descModel">Show</button>'+"</td>");
         }
         if(data[i].rules.length < 20){
-        tr.append("<td>" + data[i].rules + '<br/><button class="showMore" onclick="getRules('+ data[i]._id+')" data-toggle="modal" data-target="#descModel">Show more...</button>'+"</td>");
+        tr.append("<td>" + data[i].rules + '<br/><button class="showMore" onclick="getRules('+ data[i]._id+')" data-toggle="modal" data-target="#descModel">Show</button>'+"</td>");
         }
         else{
           var strg = data[i].rules.substring(10,15);
-          tr.append("<td>" + strg + '<br/><button class="showMore" onclick="getRules('+ data[i]._id+')" data-toggle="modal" data-target="#descModel">Show more...</button>'+"</td>");
+          tr.append("<td>" + strg + '<br/><button class="showMore" onclick="getRules('+ data[i]._id+')" data-toggle="modal" data-target="#descModel">Show</button>'+"</td>");
         }
           // .append("<td>"+ data[i].rules +"</td>")
         tr.append("<td>" + data[i].dateOfEvent + "</td>");
@@ -154,10 +192,10 @@
         tr.append("<td>" + data[i].category+ "</td>");
         tr.append("<td>" + data[i].reference_url + "</td>");
         // tr.append("<td>" + '<a href="/events/updateEvent/' + data[i].nameOfEvent + '"class="btn btn-primary" data-toggle="modal" role="button"> Update </a>'          + "</td>");
-        tr.append("<td>"+'<button type="button" onclick="play( ' + data[i]._id +')" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Update</button>'+"</td>");
+        tr.append("<td>"+'<button type="button" onclick="play( ' + data[i]._id +')" class="btn alter-but" data-toggle="modal" data-target="#myModal">Update</button>'+"</td>");
         //console.log("<td>"+'<button type="button" onclick="play('+ data[i]._id +')" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Update</button>'+"</td>");
         // tr.append("<td>" + '<a href="/events/deleteEvent/' + data[i].nameOfEvent + '"class="btn btn-primary" role="button"><span class="glyphicon glyphicon-minus">Delete</a>' + "</td>");
-        tr.append("<td>"+'<button type="button" onclick="deleteEvent('+ data[i]._id +')" class="btn btn-primary btn-lg">Delete</button>');
+        tr.append("<td>"+'<button type="button" onclick="deleteEvent('+ data[i]._id +')" class="btn alter-but">Delete</button>');
         $('#events').append(tr);
      }
    });
@@ -172,8 +210,8 @@ function play(eventId){
       console.log(data);
       document.getElementById("originalEventName").value = data.nameOfEvent;
       document.getElementById("nameOfEvent").value = data.nameOfEvent;
-      document.getElementById("description").value = data.description;
-      document.getElementById("rules").value = data.rules;
+      tinyMCE.get('description').setContent(data.description);
+      tinyMCE.get('rules').setContent(data.rules);
       document.getElementById("timeOfEvent").value = data.timeOfEvent;
       document.getElementById("dateOfEvent").value = data.dateOfEvent;
       document.getElementById("coordinator_1").value = data.coordinator_1;
@@ -190,7 +228,6 @@ function play(eventId){
 }
 
 function getDescription(eventId,task){
-  // alert(eventId);
   $(document).ready(function(){
    var url = 'http://localhost:3000/events/searchEvent/'+eventId;
    $.getJSON( url, function( data ) {
@@ -200,7 +237,6 @@ function getDescription(eventId,task){
 }
 
 function getRules(eventId){
-  //alert(eventId);
   $(document).ready(function(){
    var url = 'http://localhost:3000/events/searchEvent/'+eventId;
    $.getJSON( url, function( data ) {
@@ -211,7 +247,6 @@ function getRules(eventId){
 }
 
 function deleteEvent(eventId){
-  // alert(eventId);
   var confirm = prompt("Are you sure(Y/N)");
   if(confirm == "Y"){
     window.location="/events/deleteEventById/"+eventId;
