@@ -8,120 +8,9 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   <script src='//cdn.tinymce.com/4/tinymce.min.js'></script>
+  <script src="/js/main.js"></script>
   <script>tinymce.init({selector:'textarea'});</script>
-  <style>
-      body{
-         margin: 0px;
-         padding: 0px;
-      }
-
-      #myTable table{
-        width: 100%;
-        max-width: 100%;
-      }
-
-      #myTable table td {
-        max-width: 103px;
-        overflow: hidden;
-        padding: 10px;
-        max-height: 10px;
-      }
-
-      #descText{
-        overflow-x: auto;
-        overflow-y: auto;
-      }
-
-      #myTable table thead tr td{
-        font-size: 12px;
-        font-family:sans-serif;
-        border: 2px solid black;
-        background-color: lightgrey;
-        text-align: center;
-      }
-
-      .header{
-        height: 140px;
-        width: 100%;
-        background-color:black;
-        padding: 0px;
-        margin: 0px;
-        text-align: center;
-        color:white;
-        padding: 25px 0px;
-        font-family: sans-serif;
-      }
-
-      .header p{
-        padding: 0px;
-        margin: 0px;
-      }
-
-      .header h1{
-        margin: 0px;
-        padding: 0px;
-      }
-
-      .options{
-        width: 100%;
-        padding: 0px;
-        margin: 0px;
-        margin-top: 0px;
-        height: 100px;
-        position: absolute;
-        top:0px;
-      }
-
-      .logout{
-        float: right;
-        margin-top:5px;
-        margin-right: 10px;
-      }
-
-      .addEvent{
-        float: left;
-        margin-left: 15px;
-        margin-top: 50px;
-      }
-
-      .showMore{
-        padding: 0px;
-        margin: 0px;
-        border: 1px solid black;
-        width:70px;
-        background-color: white;
-        padding: 2px
-      }
-
-      .showMore:hover{
-        background-color: black;
-        color: white;
-      }
-      .btn-header{
-        border: 1px solid white;
-        background-color: black;
-        color:white;
-      }
-
-      .btn:hover{
-        color: black;
-        background-color: white;
-      }
-
-      .alter-but{
-        border:1px solid white;
-        background-color: white;
-        color:black;
-        border:1px solid black;
-        height: 50px;
-        font-size: 14px;
-      }
-
-      .alter-but:hover{
-        background-color: black;
-        color: white;
-      }
-    </style>
+  <link rel="stylesheet" type="text/css" href="/stylesheets/dashboard.css"/>
 </head>
 <body>
   <div class="header">
@@ -157,110 +46,10 @@
         </table>
     </div>
 </div>
-<script>
-   $(document).ready(function () {
-    $.getJSON( "/events/currentUser", function( data ) {
-     var tr;
-    for (var i=0; i<data.length; i++){
-        tr = $('<tr/>');
-        var eventId = data[i]._id;
-        tr.append("<td>" + data[i].nameOfEvent + "</td>");
-        console.log(data[i].description.length);
-        if(data[i].description.length < 20){
-        tr.append("<td>" + data[i].description + '<br/><button  class="showMore" onclick="getDescription('+ data[i]._id+')" data-toggle="modal" data-target="#descModel">Show</button>'+"</td>");
-        }
-        else{
-          var str = data[i].description.substring(10,15);
-          console.log(str);
-          tr.append("<td>" + str + '<br/><button style="font-size:15px,font-family:verdana" class="showMore" onclick="getDescription('+ data[i]._id+')" data-toggle="modal" data-target="#descModel">Show</button>'+"</td>");
-        }
-        if(data[i].rules.length < 20){
-        tr.append("<td>" + data[i].rules + '<br/><button class="showMore" onclick="getRules('+ data[i]._id+')" data-toggle="modal" data-target="#descModel">Show</button>'+"</td>");
-        }
-        else{
-          var strg = data[i].rules.substring(10,15);
-          tr.append("<td>" + strg + '<br/><button class="showMore" onclick="getRules('+ data[i]._id+')" data-toggle="modal" data-target="#descModel">Show</button>'+"</td>");
-        }
-          // .append("<td>"+ data[i].rules +"</td>")
-        tr.append("<td>" + data[i].dateOfEvent + "</td>");
-        tr.append("<td>" + data[i].timeOfEvent + "</td>");
-        tr.append("<td>" + data[i].venue + "</td>");
-        tr.append("<td>" + data[i].coordinator_1 + "</td>");
-        tr.append("<td>" + data[i].coordinator_2 + "</td>");
-        tr.append("<td>" + data[i].phoneno_1 + "</td>");
-        tr.append("<td>" + data[i].phoneno_2 + "</td>");
-        tr.append("<td>" + data[i].category+ "</td>");
-        tr.append("<td>" + data[i].reference_url + "</td>");
-        // tr.append("<td>" + '<a href="/events/updateEvent/' + data[i].nameOfEvent + '"class="btn btn-primary" data-toggle="modal" role="button"> Update </a>'          + "</td>");
-        tr.append("<td>"+'<button type="button" onclick="play( ' + data[i]._id +')" class="btn alter-but" data-toggle="modal" data-target="#myModal">Update</button>'+"</td>");
-        //console.log("<td>"+'<button type="button" onclick="play('+ data[i]._id +')" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Update</button>'+"</td>");
-        // tr.append("<td>" + '<a href="/events/deleteEvent/' + data[i].nameOfEvent + '"class="btn btn-primary" role="button"><span class="glyphicon glyphicon-minus">Delete</a>' + "</td>");
-        tr.append("<td>"+'<button type="button" onclick="deleteEvent('+ data[i]._id +')" class="btn alter-but">Delete</button>');
-        $('#events').append(tr);
-     }
-   });
-});
-
-function play(eventId){
-  //alert(eventId);
-   $(document).ready(function(){
-    var url = '/events/searchEvent/'+eventId;
-    //alert(url);
-    $.getJSON( url, function( data ) {
-      console.log(data);
-      document.getElementById("originalEventName").value = data.nameOfEvent;
-      document.getElementById("nameOfEvent").value = data.nameOfEvent;
-      tinyMCE.get('description').setContent(data.description);
-      tinyMCE.get('rules').setContent(data.rules);
-      document.getElementById("timeOfEvent").value = data.timeOfEvent;
-      document.getElementById("dateOfEvent").value = data.dateOfEvent;
-      document.getElementById("coordinator_1").value = data.coordinator_1;
-      document.getElementById("coordinator_2").value = data.coordinator_2;
-      document.getElementById("phoneno_1").value = data.phoneno_1;
-      document.getElementById("phoneno_2").value = data.phoneno_2;
-      document.getElementById("reference_url").value = data.reference_url;
-      document.getElementById("venue").value = data.venue;
-      document.getElementById("originalEventName").value = data.nameOfEvent;
-      document.getElementById("category").value = data.category;
-      console.log(data.category);
-    });
-   });
-}
-
-function getDescription(eventId,task){
-  $(document).ready(function(){
-   var url = '/events/searchEvent/'+eventId;
-   $.getJSON( url, function( data ) {
-     document.getElementById("descText").innerHTML=data.description;
-   });
- });
-}
-
-function getRules(eventId){
-  $(document).ready(function(){
-   var url = '/events/searchEvent/'+eventId;
-   $.getJSON( url, function( data ) {
-     console.log(data.rules);
-     document.getElementById("descText").innerHTML = data.rules;
-   });
- });
-}
-
-function deleteEvent(eventId){
-  var confirm = prompt("Are you sure(Y/N)");
-  if(confirm == "Y"){
-    window.location="/events/deleteEventById/"+eventId;
-  }
-  else{
-    res.render("dashboard");
-  }
-}
-</script>
 </body>
 </html>
 
 <!-- Button trigger modal -->
-
 
 <!-- another model for description-->
 <div class="modal fade" id="descModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -294,28 +83,28 @@ function deleteEvent(eventId){
           <div class="form-group">
             <label class="control-label col-sm-2" for="nameOfEvent"> Name Of Event :<span class="star">*</span></label>
             <div class="col-sm-10">
-              <input type="textarea" class="form-control" id="nameOfEvent" name="nameOfEvent" placeholder="">
+              <input type="textarea" class="form-control" id="nameOfEvent" name="nameOfEvent" placeholder="" required >
             </div>
           </div>
 
           <div class="form-group">
             <label class="control-label col-sm-2" for="description">Description :<span class="star">*</span> </label>
             <div class="col-sm-10">
-              <textarea id="description"  name="description" required></textarea>
+              <textarea id="description"  name="description"></textarea>
              </div>
           </div>
 
           <div class="form-group">
             <label class="control-label col-sm-2" for="rules">Rules :<span class="star">*</span> </label>
             <div class="col-sm-10">
-              <textarea id="rules"  name="rules" required>Give rules here...</textarea>
+              <textarea id="rules"  name="rules">Give rules here...</textarea>
             </div>
           </div>
 
           <div class="form-group">
             <label class="control-label col-sm-2" for="dateOfEvent">Date Of Event :</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="dateOfEvent" name="dateOfEvent" placeholder="  ">
+              <input type="text" class="form-control" id="dateOfEvent" name="dateOfEvent" placeholder="  " required>
             </div>
           </div>
 
@@ -337,7 +126,7 @@ function deleteEvent(eventId){
             <label class="control-label col-sm-2" for="coordinator_1"> Coordinator 1 :<span class="star">*</span> </label>
             <div class="col-sm-4">
               <input type="text" class="form-control cord1" id="coordinator_1" name="coordinator_1" placeholder="Full Name" required>
-            </div>
+            </div> 
             <div class="col-sm-4">
               <input type="text" class="form-control cord1" id="phoneno_1" name="phoneno_1" placeholder="Mobile Number" required>
             </div>
@@ -357,7 +146,6 @@ function deleteEvent(eventId){
             <label class="control-label col-sm-2" for="phoneno_2">Category:<span class="star">*</span> </label>
             <div class="col-sm-10">
               <select name="category" id="category" required>
-                <option value="none"></option>
                 <option value="Technical">Technical</option>
                 <option value="Managerial">Managerial</option>
                 <option value="Quizzes">Quizzes</option>

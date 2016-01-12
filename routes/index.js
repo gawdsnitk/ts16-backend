@@ -12,15 +12,25 @@ function checkUser(req,res,next){
     res.redirect('/login');
   }
 }
-/* GET home page. */
-router.get('/',checkUser, function(req, res, next) {
+
+function redirectToDash(req,res,next){
+  if(req.session && req.session.userName){
+    res.render('dashboard');
+  }
+  else{
+    next();
+  }
+}
+
+router.get('/login',redirectToDash,function(req,res,next){
   res.render('login');
 });
 
-router.get('/login',checkUser, function(req, res){
-   res.render('login');
+router.get('/',redirectToDash,function(req, res, next) {
+  res.render('login');
 });
-router.get('/registerAdmin',checkUser, function(req,res){
+
+router.get('/registerAdmin', function(req,res){
     res.render('register');
 });
 
