@@ -13,14 +13,14 @@ function checkUser(req,res,next){
   }
 }
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/',checkUser, function(req, res, next) {
   res.render('login');
 });
 
-router.get('/login', function(req, res){
+router.get('/login',checkUser, function(req, res){
    res.render('login');
 });
-router.get('/registerAdmin',function(req,res){
+router.get('/registerAdmin',checkUser, function(req,res){
     res.render('register');
 });
 

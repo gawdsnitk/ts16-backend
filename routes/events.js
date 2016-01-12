@@ -56,6 +56,27 @@ router.get('/',cors(),function(req,res){
   });
 });
 
+//API TO LIST OF EVENT BY SESSION (GET)
+router.get('/currentUser',cors(),function(req,res){
+  //res.render('event');
+  var query=eventSchema.find({'userId':req.session.userId});
+  query.exec(function(err,data){
+   if(!err){
+    if(data){
+    console.log(data);
+    res.send(data);
+    //res.send(JSON.stringify(data));
+   }
+   else{
+    res.send('No events yet');
+   }
+ }
+   else{
+    console.log(err);
+   }
+  });
+});
+
 router.get('/postEvent',checkLogin,function(req,res){
  if(req.session && req.session.userName){              //post event only if user has logged in
  res.render('dashboard');
