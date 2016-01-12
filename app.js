@@ -7,6 +7,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose=require('mongoose');
+var cors = require('cors');
 
 
 
@@ -44,16 +45,18 @@ app.use(session({
   resave           :  true,
   saveUninitialized:  true
 }));
+app.use(cors());
+console.log('CORS enabled');
 console.log('session secret key created');
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(function(req,res,next){
-  console.log('SETTING CORS IN APP.JS');
-  res.header("Access-Control-Allow-Origin","*");
-  res.header("Access-Control-Allow-Headers","Origin,X-Requested-With,Content-Type,Accept");
-  console.log('CORS HAS BEEN ENABLED');
-  next();
-});
+// app.use(function(req,res,next){
+//   console.log('SETTING CORS IN APP.JS');
+//   res.header("Access-Control-Allow-Origin","*");
+//   res.header("Access-Control-Allow-Headers","Origin,X-Requested-With,Content-Type,Accept");
+//   console.log('CORS HAS BEEN ENABLED');
+//   next();
+// });
 
 app.use('/', routes);
 app.use('/users', users);
