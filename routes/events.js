@@ -2,7 +2,9 @@ var express = require('express');
 var router = express.Router();
 var mongoose=require('mongoose');
 var autoIncrement = require('mongoose-auto-increment');
+var cors = require('cors');
 
+router.use(cors());
 //adding the connection
 var connection=mongoose.createConnection('mongodb://localhost/ts16DB');
 
@@ -34,7 +36,7 @@ function checkLogin(req,res,next){
 
 
 //API TO LIST ALL EVENT(GET)
-router.get('/',function(req,res){
+router.get('/',cors(),function(req,res){
   //res.render('event');
   var query=eventSchema.find({});
   query.exec(function(err,data){
