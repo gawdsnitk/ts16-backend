@@ -159,7 +159,7 @@
 </div>
 <script>
    $(document).ready(function () {
-    $.getJSON( "http://localhost:3000/events", function( data ) {
+    $.getJSON( "/events", function( data ) {
      var tr;
     for (var i=0; i<data.length; i++){
         tr = $('<tr/>');
@@ -204,7 +204,7 @@
 function play(eventId){
   //alert(eventId);
    $(document).ready(function(){
-    var url = 'http://localhost:3000/events/searchEvent/'+eventId;
+    var url = '/events/searchEvent/'+eventId;
     //alert(url);
     $.getJSON( url, function( data ) {
       console.log(data);
@@ -229,7 +229,7 @@ function play(eventId){
 
 function getDescription(eventId,task){
   $(document).ready(function(){
-   var url = 'http://localhost:3000/events/searchEvent/'+eventId;
+   var url = '/events/searchEvent/'+eventId;
    $.getJSON( url, function( data ) {
      document.getElementById("descText").innerHTML=data.description;
    });
@@ -238,7 +238,7 @@ function getDescription(eventId,task){
 
 function getRules(eventId){
   $(document).ready(function(){
-   var url = 'http://localhost:3000/events/searchEvent/'+eventId;
+   var url = '/events/searchEvent/'+eventId;
    $.getJSON( url, function( data ) {
      console.log(data.rules);
      document.getElementById("descText").innerHTML = data.rules;
