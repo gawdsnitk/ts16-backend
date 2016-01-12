@@ -47,6 +47,14 @@ app.use(session({
 console.log('session secret key created');
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(function(req,res,next){
+  console.log('SETTING CORS IN APP.JS');
+  res.header("Access-Control-Allow-Origin","*");
+  res.header("Access-Control-Allow-Headers","Origin,X-Requested-With,Content-Type,Accept");
+  console.log('CORS HAS BEEN ENABLED');
+  next();
+});
+
 app.use('/', routes);
 app.use('/users', users);
 app.use('/events',events);
