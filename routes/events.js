@@ -34,6 +34,16 @@ function checkLogin(req,res,next){
   }
 }
 
+router.get('/updateEvent',checkLogin,function(req,res){
+  res.render('dashboard');
+});
+
+router.get('/username',cors(),function(req,res){
+  console.log('IN THE HIRO'+req.session.userName);
+  res.send({
+    "uname":req.session.userName
+  });
+});
 
 //API TO LIST ALL EVENT(GET)
 router.get('/',cors(),function(req,res){
@@ -79,7 +89,7 @@ router.get('/currentUser',cors(),function(req,res){
 
 router.get('/postEvent',checkLogin,function(req,res){
  if(req.session && req.session.userName){              //post event only if user has logged in
- res.render('dashboard');
+ res.render('dashboard',{uname:req.session.userName});
  }
  else{
    res.redirect('../login');
@@ -256,5 +266,4 @@ router.get('/category/:name',function(req,res){
     //console.log(data);
   });
 });
-
 module.exports=router;
