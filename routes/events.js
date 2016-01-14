@@ -117,6 +117,7 @@ router.post('/postEvent',checkLogin,function(req,res){
   reference_url:req.body.reference_url,                                         //for the reference
   userId:req.session.userId
 });
+
 eventDetails.save(function(err,data){
   if(err){
     console.log('error occured'+err);
@@ -291,7 +292,7 @@ router.get('/categorySchema',function(req,res){
   });
 });
 
-router.get('/eventByCategoryId/:id',function(req,res){
+router.post('/eventByCategoryId/:id',function(req,res){
   var query = categorySchema.findOne({'categoryId':req.params.id});
   query.exec(function(err,data){
     if(!err){
