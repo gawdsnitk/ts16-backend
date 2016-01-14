@@ -267,6 +267,7 @@ router.get('/category/:name',function(req,res){
   });
 });
 
+//API FOR FINDING THE EVENTS CORRESPONDING TO A PARTICULAR CATEGORYID
 router.post('/eventByCategoryId',function(req,res){
   var categoryId = req.body.categoryId;
   //res.send(categoryId);
@@ -303,4 +304,22 @@ router.post('/eventByCategoryId',function(req,res){
    });
  });
 
+//API FOR LISTING ALL THE EVENTS ACCORDING TO DEPARTMENTS
+router.post('/department',function(req,res){
+  var deptId = req.body.deptId;
+  var getDeptEvents = eventSchema.find({'userId':deptId});
+  getDeptEvents.exec(function(err,data){
+    if(!err){
+      if(data != ""){
+        res.send(data);
+      }
+      else{
+        res.send('No events yet');
+      }
+    }
+    else{
+      res.send('error occurred'+err);
+    }
+  });
+});
 module.exports=router;
