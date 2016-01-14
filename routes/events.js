@@ -51,14 +51,15 @@ router.get('/',cors(),function(req,res){
   var query=eventSchema.find({});
   query.exec(function(err,data){
    if(!err){
-    if(data){
-    console.log(data);
-    res.send(data);
-    //res.send(JSON.stringify(data));
-   }
-   else{
-    res.send('No events yet');
-   }
+     res.send(data);
+  //   if(data){
+  //   console.log(data);
+  //   res.send(data);
+  //   //res.send(JSON.stringify(data));
+  //  }
+  //  else{
+  //   res.send('No events yet');
+  //  }
  }
    else{
     console.log(err);
@@ -136,13 +137,14 @@ router.get('/searchEvent/:id',function(req,res){
   var query = eventSchema.findOne({'_id':req.params.id});
   query.exec(function(err,data){
     if(!err){
-      if(data != ""){
-      console.log('EVENT FOUND'+data);
       res.send(data);
-    }
-    else{
-      res.send('NO SUCH EVENT');
-    }
+    //   if(data != ""){
+    //   console.log('EVENT FOUND'+data);
+    //   res.send(data);
+    // }
+    // else{
+    //   res.send('NO SUCH EVENT');
+    // }
     }
     else{
       console.log(err);
@@ -170,12 +172,13 @@ router.get('/:event Name',function(req,res){
  var query=eventSchema.findOne({'nameOfEvent':req.params.eventName});
  query.exec(function(err,result){
   if(!err){
-    if(result){
     res.send(result);
-  }
-  else{
-    res.send('no such event registered');
-  }
+  //   if(result){
+  //   res.send(result);
+  // }
+  // else{
+  //   res.send('no such event registered');
+  // }
   }
   else{
     console.log('error');
@@ -257,7 +260,7 @@ router.get('/category/:name',function(req,res){
   query.exec(function(err,data){
     if(err){
       console.log(err);
-      res.send('NO SUCH CATEGORY EXISTS');
+      res.send('error occurred'+err);
     }
     else{
       console.log(data);
@@ -275,7 +278,7 @@ router.post('/eventByCategoryId',function(req,res){
   query.exec(function(err,data){
     if(!err){
       if(data == ""){
-        res.send("No such category exists");
+        res.send(data);
       }
       else{
       var categoryName = data.categoryName;
@@ -310,12 +313,7 @@ router.post('/department',function(req,res){
   var getDeptEvents = eventSchema.find({'userId':deptId});
   getDeptEvents.exec(function(err,data){
     if(!err){
-      if(data != ""){
-        res.send(data);
-      }
-      else{
-        res.send('No events yet');
-      }
+      res.send(data);
     }
     else{
       res.send('error occurred'+err);
