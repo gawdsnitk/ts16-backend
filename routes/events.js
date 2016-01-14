@@ -20,7 +20,7 @@ eventSchema.plugin(autoIncrement.plugin,'eventSchema');
 //for the userSchema
 var userSchema=require('../models/userSchema');
 var eventSchema=mongoose.model('eventSchema',eventSchema);
-
+var categorySchema = require('../models/categorySchema');
 
 var userSchema=mongoose.model('userSchema',userSchema);
 
@@ -116,8 +116,7 @@ router.post('/postEvent',checkLogin,function(req,res){
   category:req.body.category,
   reference_url:req.body.reference_url,                                         //for the reference
   userId:req.session.userId
-}
-);
+});
 eventDetails.save(function(err,data){
   if(err){
     console.log('error occured'+err);
@@ -266,4 +265,63 @@ router.get('/category/:name',function(req,res){
     //console.log(data);
   });
 });
+
+router.get('/categorySchema',function(req,res){
+  //manager:1
+  //quizz:2
+  //funzone:3
+  //OnlineEvents:4
+  //PaperEvents:5
+  //Technoplois:6
+  //Design:7
+  //BrainStorming:8
+  //FutureBuilder:9
+
+  var newCategory = new categorySchema({
+    categoryName:"Managerial",
+    categoryId:1
+  });
+  newCategory.save(function(err,data){
+    if(err){
+      console.log(err);
+    }
+    else{
+      console.log('data saved'+data);
+    }
+  });
+});
+
+router.get('/eventByCategoryId/:id',function(req,res){
+  var query = categorySchema.findOne({'categoryId':req.params.id});
+  query.exec(function(err,data){
+    if(!err){
+      if(data == ""){
+        res.send("No such category exists");
+      }
+      else{
+      var categoryName = data.categoryName;
+      console.log('SEARCHING EVENTS FOR THE CATEGORY:'+data.categoryName);
+      var getEvents = eventSchema.find({'category':categoryName});
+      getEvents.exec(function(err,events){
+        if(!err){
+        //   if(events != ""){
+        //     res.send(events);
+        //   }
+        // else{
+        //   res.send('No events yet');
+        // }
+        res.send(events);
+      }
+      else{
+        res.send('error occured'+err);
+      }
+      });
+     }
+    }
+    else{
+      console.log(err);
+      res.send(err);
+    }
+   });
+ });
 module.exports=router;
