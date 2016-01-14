@@ -99,7 +99,7 @@ router.get('/postEvent',checkLogin,function(req,res){
 //API FOR POSTING AN EVENT(POST)
 router.post('/postEvent',checkLogin,function(req,res){
   console.log(req.body.nameOfEvent);
-  console.log('in post event');
+  console.log('In post event');
   var eventDetails = new eventSchema(
   {
   //get all values
@@ -267,33 +267,10 @@ router.get('/category/:name',function(req,res){
   });
 });
 
-router.get('/categorySchema',function(req,res){
-  //manager:1
-  //quizz:2
-  //funzone:3
-  //OnlineEvents:4
-  //PaperEvents:5
-  //Technoplois:6
-  //Design:7
-  //BrainStorming:8
-  //FutureBuilder:9
-
-  var newCategory = new categorySchema({
-    categoryName:"Managerial",
-    categoryId:1
-  });
-  newCategory.save(function(err,data){
-    if(err){
-      console.log(err);
-    }
-    else{
-      console.log('data saved'+data);
-    }
-  });
-});
-
-router.post('/eventByCategoryId/:id',function(req,res){
-  var query = categorySchema.findOne({'categoryId':req.params.id});
+router.post('/eventByCategoryId',function(req,res){
+  var categoryId = req.body.categoryId;
+  //res.send(categoryId);
+  var query = categorySchema.findOne({'categoryId':categoryId});
   query.exec(function(err,data){
     if(!err){
       if(data == ""){
@@ -325,4 +302,5 @@ router.post('/eventByCategoryId/:id',function(req,res){
     }
    });
  });
+
 module.exports=router;
