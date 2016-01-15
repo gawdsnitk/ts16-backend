@@ -320,4 +320,20 @@ router.post('/department',function(req,res){
     }
   });
 });
+
+//api for searching a particular event by eventid using POST request
+router.post('/searchEvent',function(req,res){
+  var eventId = req.body.eventId;
+  var query = eventSchema.findOne({'_id':eventId});
+  query.exec(function(err,data){
+    if(!err){
+      console.log(data);
+      res.send(data);
+    }
+    else{
+      console.log('error'+err);
+      res.send('error occurred');
+    }
+  });
+});
 module.exports=router;
