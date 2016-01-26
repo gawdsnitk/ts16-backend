@@ -38,6 +38,9 @@ router.get('/addevent',checkUser, function(req, res){
    res.render('addEvent');
 });
 
+router.get('/notification',function(req,res){
+  res.render('notification');
+});
 /*
 router.post('/registerAdmin',function(req,res){
   res.json(req.body);
