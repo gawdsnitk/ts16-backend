@@ -1,9 +1,11 @@
 var mongoose=require('mongoose');
 //var autoIncrement=require('mongoose-auto-increment');
 var userSchema=new mongoose.Schema({
-  id:Number,
-  userName:String,
-  email:String,
+  name:String,
+  userName:{
+  	type:String,
+  	unique:true,   //used for creating the unique fields according to the username
+  },
   password:String
 });
 //creating the model for our schema//

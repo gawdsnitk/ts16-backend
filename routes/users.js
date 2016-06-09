@@ -1,77 +1,76 @@
 var express = require('express');
 var session = require('express-session');
 var router = express.Router();
-
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/ts16DB');
+var autoIncrement = require('mongoose-auto-increment');
+var bcrypt=require('bcryptjs');
+
+var connection=mongoose.createConnection('mongodb://localhost/ts16D');
 var userSchema = require('../models/userSchema');
+
+//autoIncrement for creating the object id to be autoincrementing
+autoIncrement.initialize(connection);
+console.log('auto increment added to app.js');
+userSchema.plugin(autoIncrement.plugin,'userSchema');
 
 /* GET users listing. */
 var userSchema = mongoose.model('userSchema',userSchema);
-var sess = {}; //will be used for session variables
+//var sess = {}; //will be used for session variables
 
 router.post('/register', function(req, res, next) {
-    console.log(req.body);
-    var name = req.body.name;
-    var email = req.body.email;
-    var password = req.body.password;
+    //console.log(req.body);
+    var name = req.body.Name;
+    var userName = req.body.userName;
+    //var passwordHash = req.body.password;
+    var passwordHash = bcrypt.hashSync(req.body.password,8); //hashing the password
     var admin = new userSchema({
-        userName: name,
-        email: email,
-        password:password
-        
+       name:name,
+       userName:userName,
+       password:passwordHash
     });
     console.log('values retrieved');
     admin.save(function(err,data){
         if(err)
         {
-            console.log(err);
+            console.log(err.code+err);
+            if(err.code === 11000){
+            var error='the user with the username:'+userName+' already exists';
+            }
+            else{
+            var error='something bad happened';
+            }
+            res.send(error);
         }
         else
         {
             console.log(admin.userName + "inserted");
+            res.send('registered');
         }
     });
-    res.send("done");
 });
 
 router.post('/loginValidate', function(req, res, next){
-    console.log(req.body);
-    var sentemail = req.body.email;
+    var sentUsername = req.body.userName;
     var sentpassword = req.body.password;
-    userSchema.findOne({ email : sentemail},function(err,user){
+    userSchema.findOne({ userName : sentUsername},function(err,user){
         if(err)
         {
-            console.log("no match");
+            console.log("error occurred:"+err);
         }
         if(user)
-        {  
-            console.log(user.password);
-            var userpass=user.password;
-            //console.log('userId is'+ userid);
-            userSchema.findOne({password : sentpassword},function(err,passwordMatch){
-            if(err) 
-            {
-                throw err;
+        {
+            if(bcrypt.compareSync(sentpassword,user.password)){
+             req.session.userName = sentUsername;
+             req.session.userId = user._id;
+             //console.log(sess);
+             res.redirect('../events/postEvent');
             }
             else{
-                if(passwordMatch)
-                {
-                   var pass=passwordMatch.password; 
-                   console.log('Password:',passwordMatch.password);
-                }
-                if(userpass==pass)
-                {
-                    sess = req.session;
-                    sess.userEmail = sentemail;
-                    console.log(sess);
-                    res.redirect('../sessionName');
-                }
-                else res.send('you entered incorrect password');
+                console.log('password mismatch');
+                res.send('you entered invalid password');
             }
-        });
         }
-        else 
+        else
         {
             console.log('no match found');
             res.send('you entered invaid emailId');
